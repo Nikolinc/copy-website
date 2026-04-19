@@ -34,6 +34,5 @@
 
 ```bash
 wget https://raw.githubusercontent.com/Nikolinc/copy-website/main/copy_hestia.sh
-cd copy-hestia
 chmod +x copy_hestia.sh
 ./copy_hestia.sh --old old.com --new new.com
