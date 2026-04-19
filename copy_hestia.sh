@@ -73,7 +73,8 @@ fi
 
 if [[ -n "$OLD_DB_NAME" && -n "$OLD_DB_USER" && -n "$OLD_DB_PASS" ]]; then
   echo "[5] Dump DB: $OLD_DB_NAME"
-  mysqldump -uroot "$OLD_DB_NAME" > /tmp/${OLD_DB_NAME}_$$.sql" || echo "Dump failed"
+  DUMP_FILE="/tmp/${OLD_DB_NAME}_$$.sql"
+  mysqldump -uroot "$OLD_DB_NAME" > "$DUMP_FILE" || echo "Dump failed"
 
   echo "[6] Create new DB"
   NEW_DB_NAME="${NEW//./_}"
@@ -87,7 +88,7 @@ if [[ -n "$OLD_DB_NAME" && -n "$OLD_DB_USER" && -n "$OLD_DB_PASS" ]]; then
   echo "DB_PASS: $NEW_DB_PASS"
 
   echo "[7] Import DB"
-  mysql -uroot "$NEW_DB_NAME" < /tmp/${OLD_DB_NAME}.sql || echo "Import failed"
+  mysql -uroot "$NEW_DB_NAME" < "$DUMP_FILE"  || echo "Import failed"
 
   echo "[8] Update config"
 
