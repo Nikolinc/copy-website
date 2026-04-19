@@ -102,6 +102,7 @@ if [[ -n "$OLD_DB_NAME" && -n "$OLD_DB_USER" && -n "$OLD_DB_PASS" ]]; then
   echo "DB_PASS: $NEW_DB_PASS"
 
   echo "[7] Import DB"
+  sed -i "s/$OLD/$NEW/g" "$DUMP_FILE
   mysql -uroot "$REAL_DB_NAME" < "$DUMP_FILE"  || echo "Import failed"
 
   echo "[8] Update config"
