@@ -36,10 +36,10 @@ if ! v-list-web-domain "$USER" "$NEW" >/dev/null 2>&1; then
   fi
 
   if [[ "$OLD_PHP" == "default" || -z "$OLD_PHP" ]]; then
-    OLD_PHP="PHP-7_4"
+    v-add-domain "$USER" "$NEW"
+  else
+    v-add-web-domain "$USER" "$NEW" "$OLD_IP" "$OLD_PROXY" "no" "$OLD_PHP"
   fi
-
-  v-add-web-domain "$USER" "$NEW" "$OLD_IP" "$OLD_PROXY" "no" "$OLD_PHP"
 fi
 
 echo "[2] Copy files"
