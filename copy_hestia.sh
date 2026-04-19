@@ -25,9 +25,13 @@ fi
 OLD_PATH="/home/$USER/web/$OLD/public_html"
 NEW_PATH="/home/$USER/web/$NEW/public_html"
 
+OLD_PHP=$(v-list-web-domain "$USER" "$OLD" | awk '/BACKEND/ {print $2}')
+OLD_PROXY=$(v-list-web-domain "$USER" "$OLD" | awk '/PROXY/ {print $2}')
+OLD_IP=$(v-list-web-domain "$USER" "$OLD" | awk -F': ' '/^IP:/ {print $2}' | xargs)
+
 echo "[1] Check/create domain"
 if ! v-list-web-domain "$USER" "$NEW" >/dev/null 2>&1; then
-  v-add-domain "$USER" "$NEW"
+  v-add-web-domain "$USER" "$NEW" "$OLD_IP" "$OLD_PROXY" "no" "$OLD_PHP"
 fi
 
 echo "[2] Copy files"
