@@ -83,20 +83,22 @@ if [[ -n "$OLD_DB_NAME" && -n "$OLD_DB_USER" && -n "$OLD_DB_PASS" ]]; then
 
   v-add-database "$USER" "$NEW_DB_NAME" "$NEW_DB_USER" "$NEW_DB_PASS"
 
+  REAL_DB_NAME="${USER}_${NEW_DB_NAME}"
+
   echo "New DB credentials"
-  echo "DB_USER: $NEW_DB_USER"
+  echo "DB_USER: $REAL_DB_NAME"
   echo "DB_PASS: $NEW_DB_PASS"
 
   echo "[7] Import DB"
-  mysql -uroot "$NEW_DB_NAME" < "$DUMP_FILE"  || echo "Import failed"
+  mysql -uroot "$REAL_DB_NAME" < "$DUMP_FILE"  || echo "Import failed"
 
   echo "[8] Update config"
 
   OLD_DB_PASS_ESC=$(escape_sed "$OLD_DB_PASS")
   NEW_DB_PASS_ESC=$(escape_sed "$NEW_DB_PASS")
 
-  sed -i "s|$OLD_DB_NAME|$NEW_DB_NAME|g" "$CONFIG_FILE"
-  sed -i "s|$OLD_DB_USER|$NEW_DB_USER|g" "$CONFIG_FILE"
+  sed -i "s|$OLD_DB_NAME|$REAL_DB_NAME|g" "$CONFIG_FILE"
+  sed -i "s|$OLD_DB_USER|$REAL_DB_NAME|g" "$CONFIG_FILE"
   sed -i "s|$OLD_DB_PASS_ESC|$NEW_DB_PASS_ESC|g" "$CONFIG_FILE"
 else
   echo "DB config not found or parse failed, skip DB"
