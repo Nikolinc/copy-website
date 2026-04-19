@@ -31,6 +31,10 @@ OLD_IP=$(v-list-web-domain "$USER" "$OLD" | awk -F': ' '/^IP:/ {print $2}' | xar
 
 echo "[1] Check/create domain"
 if ! v-list-web-domain "$USER" "$NEW" >/dev/null 2>&1; then
+  if [[ "$OLD_PROXY" == "default" || -z "$OLD_PROXY" ]]; then
+    OLD_PROXY="no"
+  fi
+
   v-add-web-domain "$USER" "$NEW" "$OLD_IP" "$OLD_PROXY" "no" "$OLD_PHP"
 fi
 
