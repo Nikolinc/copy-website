@@ -35,6 +35,10 @@ if ! v-list-web-domain "$USER" "$NEW" >/dev/null 2>&1; then
     OLD_PROXY="no"
   fi
 
+  if [[ "$OLD_PHP" == "default" || -z "$OLD_PHP" ]]; then
+    OLD_PHP="PHP-7_4"
+  fi
+
   v-add-web-domain "$USER" "$NEW" "$OLD_IP" "$OLD_PROXY" "no" "$OLD_PHP"
 fi
 
